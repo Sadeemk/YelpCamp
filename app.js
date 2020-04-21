@@ -2,39 +2,13 @@ const express = require('express'),
 	app = express(),
 	bodyParser = require('body-parser'),
 	mongoose = require('mongoose'),
-	Campground = require('./models/campground');
+	Campground = require('./models/campground'),
+	seedDB = require('./seeds');
 
+seedDB();
 mongoose.connect('mongodb://localhost/yelp_camp', { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
-
-// Campground.create(
-// 	{
-// 		name: 'Sunny Steps',
-// 		image: 'https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg',
-// 		description: 'This is a campground on a step with amazing sunlight. No water, no bathrooms!'
-// 	},
-// 	function(err, campground) {
-// 		if (err) {
-// 			console.log(err);
-// 		} else {
-// 			console.log('NEWLY CREATED CAMPGROUND: ');
-// 			console.log(campground);
-// 		}
-// 	}
-// );
-
-// let campgrounds = [
-// 	{ name: 'Weeping Woods', image: 'https://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg' },
-// 	{ name: 'Sunny Steps', image: 'https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg' },
-// 	{ name: 'Lazy Lake', image: 'https://farm7.staticflickr.com/6057/6234565071_4d20668bbd.jpg' },
-// 	{ name: 'Weeping Woods', image: 'https://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg' },
-// 	{ name: 'Sunny Steps', image: 'https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg' },
-// 	{ name: 'Lazy Lake', image: 'https://farm7.staticflickr.com/6057/6234565071_4d20668bbd.jpg' },
-// 	{ name: 'Weeping Woods', image: 'https://farm9.staticflickr.com/8442/7962474612_bf2baf67c0.jpg' },
-// 	{ name: 'Sunny Steps', image: 'https://farm1.staticflickr.com/60/215827008_6489cd30c3.jpg' },
-// 	{ name: 'Lazy Lake', image: 'https://farm7.staticflickr.com/6057/6234565071_4d20668bbd.jpg' }
-// ];
 
 app.get('/', (req, res) => {
 	res.render('landing');
@@ -73,10 +47,11 @@ app.get('/campgrounds/new', (req, res) => {
 // SHOW - shows more info about one campground
 app.get('/campgrounds/:id', (req, res) => {
 	//find campgound with provided id
-	Campground.findById(req.params.id, (err, foundCampground) => {
+	Campground.findById(req.params.id).populate('comments').exec(function(err, foundCampground) {
 		if (err) {
 			console.log(err);
 		} else {
+			console.log(foundCampground);
 			res.render('show', { campground: foundCampground });
 		}
 	});
