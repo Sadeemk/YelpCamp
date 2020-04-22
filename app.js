@@ -5,10 +5,10 @@ const express = require('express'),
 	Campground = require('./models/campground'),
 	seedDB = require('./seeds');
 
-seedDB();
 mongoose.connect('mongodb://localhost/yelp_camp', { useNewUrlParser: true, useUnifiedTopology: true });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+seedDB();
 
 app.get('/', (req, res) => {
 	res.render('landing');
