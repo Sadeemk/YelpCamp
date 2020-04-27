@@ -117,6 +117,26 @@ app.post('/campgrounds/:id/comments', (req, res) => {
 app.get('/register', (req, res) => {
 	res.render('register');
 });
+//handle sign-up logic
+app.post('/register', (req, res) => {
+	let newUser = new User({ username: req.body.username });
+	User.register(newUser, req.body.password, function(err, user) {
+		if (err) {
+			console.log(err);
+			return res.render('register');
+		}
+		passport.authenticate('local')(req, res, function() {
+			res.redirect('/campgrounds');
+		});
+	});
+});
+
+//show login form
+app.get('/login', (req, res) => {
+	res.render('login');
+});
+//login logic
+app.post('login', (req, res) => {});
 
 app.listen(3000, () => {
 	console.log('YelpCamp server started on port 3000');
