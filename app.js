@@ -17,7 +17,7 @@ const commentRoutes = require('./routes/comments'),
 	indexRoutes = require('./routes/index');
 
 mongoose
-	.connect('mongodb+srv://dbUser:7mJwXk72Dy2Yci9@cluster0-pqr8e.mongodb.net/test?retryWrites=true&w=majority', {
+	.connect(process.env.DATABASEURL, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true
 	})
