@@ -63,5 +63,5 @@ app.use('/campgrounds', campgroundRoutes);
 
 let port = process.env.PORT || 3000;
 app.listen(port, () => {
-	console.log('YelpCamp server has started');
+	console.log('The YelpCamp server has started');
 });
